@@ -8,7 +8,6 @@
     <artifactId>ai-rag-knowledge</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
-
     <modules>
         <module>malog-dev-tech-api</module>
         <module>malog-dev-tech-app</module>
@@ -16,9 +15,10 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-ai.version>0.8.1</spring-ai.version>
     </properties>
 
     <repositories>
@@ -50,31 +50,16 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.2.3</version>
+        <relativePath/>
     </parent>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-pgvector-store-spring-boot-starter</artifactId>
-                <version>0.8.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-core</artifactId>
-                <version>1.0.0-M5</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.cloud.ai</groupId>
-                <artifactId>spring-ai-alibaba-starter</artifactId>
-                <version>1.0.0-M5.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>
-                <version>1.0.3</version>
+                <version>${spring-ai.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -107,13 +92,13 @@
             </dependency>
 
             <dependency>
-                <groupId>com.malog</groupId>
-                <artifactId>malog-dev-tech-api</artifactId>
+                <groupId>cn.bugstack</groupId>
+                <artifactId>xfg-dev-tech-api</artifactId>
                 <version>1.0</version>
             </dependency>
             <dependency>
-                <groupId>com.malog</groupId>
-                <artifactId>malog-dev-tech-trigger</artifactId>
+                <groupId>cn.bugstack</groupId>
+                <artifactId>xfg-dev-tech-trigger</artifactId>
                 <version>1.0</version>
             </dependency>
         </dependencies>

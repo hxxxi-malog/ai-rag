@@ -1,6 +1,6 @@
 package com.malog.hxxxi.dev.tech.api;
 
-import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.ChatResponse;
 import reactor.core.publisher.Flux;
 
 public interface IAiService {

@@ -2,9 +2,9 @@ package com.malog.hxxxi.dev.tech.trigger;
 
 import com.malog.hxxxi.dev.tech.api.IAiService;
 import jakarta.annotation.Resource;
-import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.ollama.OllamaChatModel;
+import org.springframework.ai.ollama.OllamaChatClient;
 import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
 public class OllamaController implements IAiService {
 
     @Resource
-    private OllamaChatModel ollamaChatModel;
+    private OllamaChatClient chatClient;
 
     /**
      * 生成聊天响应
@@ -32,7 +32,7 @@ public class OllamaController implements IAiService {
     @RequestMapping(value = "generate", method = RequestMethod.GET)
     @Override
     public ChatResponse generate(@RequestParam String model, @RequestParam String message) {
-        return ollamaChatModel.call(new Prompt(message, OllamaOptions.builder().model(model).build()));
+        return chatClient.call(new Prompt(message, OllamaOptions.create().withModel(model)));
     }
 
     /**
@@ -45,7 +45,7 @@ public class OllamaController implements IAiService {
     @RequestMapping(value = "generate", method = RequestMethod.GET)
     @Override
     public Flux<ChatResponse> generateStream(@RequestParam String model, @RequestParam String message) {
-        return ollamaChatModel.stream(new Prompt(message, OllamaOptions.builder().model(model).build()));
+        return chatClient.stream(new Prompt(message, OllamaOptions.create().withModel(model)));
     }
 
 }

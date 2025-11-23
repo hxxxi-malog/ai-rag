@@ -18,8 +18,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.cloud.ai</groupId>
-            <artifactId>spring-ai-alibaba-starter</artifactId>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.ai</groupId>
@@ -50,6 +50,7 @@
         <dependency>
             <groupId>com.malog</groupId>
             <artifactId>malog-dev-tech-api</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.redisson</groupId>
@@ -63,5 +64,9 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <finalName>xfg-dev-tech-trigger</finalName>
+    </build>
 
 </project>
