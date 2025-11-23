@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 public class OllamaConfig {
-    // TODO ollama api
 
     @Bean
     public OllamaApi ollamaApi(@Value("${spring.ai.ollama.base-url}") String baseUrl) {
