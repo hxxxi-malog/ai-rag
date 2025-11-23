@@ -1,1 +1,0 @@
-package com.malog.hxxxi.dev.tech.trigger;
