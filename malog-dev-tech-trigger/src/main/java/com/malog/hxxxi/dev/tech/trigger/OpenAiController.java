@@ -8,8 +8,7 @@ import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.ollama.OllamaChatClient;
-import org.springframework.ai.ollama.api.OllamaOptions;
+import org.springframework.ai.openai.OpenAiChatClient;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.vectorstore.PgVectorStore;
 import org.springframework.ai.vectorstore.SearchRequest;
@@ -23,16 +22,16 @@ import java.util.stream.Collectors;
 
 /**
  * @Auth : Malog
- * @Desc : Ollama聊天模型控制
- * @Time : 2025/11/23 17:06
+ * @Desc : OpenAi聊天模型控制
+ * @Time : 2025/11/25 19:27
  */
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/v1/ollama/")
-public class OllamaController implements IAiService {
+@RequestMapping("/api/v1/openai/")
+public class OpenAiController implements IAiService {
 
     @Resource
-    private OllamaChatClient chatClient;
+    private OpenAiChatClient chatClient;
     @Resource
     private PgVectorStore pgVectorStore;
 
@@ -45,8 +44,8 @@ public class OllamaController implements IAiService {
      */
     @RequestMapping(value = "generate", method = RequestMethod.GET)
     @Override
-    public ChatResponse generate(@RequestParam String model, @RequestParam String message) {
-        return chatClient.call(new Prompt(message, OllamaOptions.create().withModel(model)));
+    public ChatResponse generate(String model, String message) {
+        return chatClient.call(new Prompt(message, OpenAiChatOptions.builder().withModel(model).build()));
     }
 
     /**
@@ -56,10 +55,10 @@ public class OllamaController implements IAiService {
      * @param message 用户消息
      * @return 流式的聊天响应结果
      */
-    @RequestMapping(value = "generate", method = RequestMethod.GET)
+    @RequestMapping(value = "generate_stream", method = RequestMethod.GET)
     @Override
-    public Flux<ChatResponse> generateStream(@RequestParam String model, @RequestParam String message) {
-        return chatClient.stream(new Prompt(message, OllamaOptions.create().withModel(model)));
+    public Flux<ChatResponse> generateStream(String model, String message) {
+        return chatClient.stream(new Prompt(message, OpenAiChatOptions.builder().withModel(model).build()));
     }
 
     /**
@@ -73,6 +72,7 @@ public class OllamaController implements IAiService {
     @RequestMapping(value = "generate_stream_rag", method = RequestMethod.GET)
     @Override
     public Flux<ChatResponse> generateStreamRag(@RequestParam("model") String model, @RequestParam("ragTag") String ragTag, @RequestParam("message") String message) {
+
         String SYSTEM_PROMPT = """
                 Use the information from the DOCUMENTS section to provide accurate answers but act as if you knew this information innately.
                 If unsure, simply state that you don't know.
@@ -81,7 +81,7 @@ public class OllamaController implements IAiService {
                     {documents}
                 """;
 
-        // 指定文档搜索
+        // 构建文档搜索请求，根据用户消息在指定的知识标签下搜索最相关的5个文档
         SearchRequest request = SearchRequest.query(message)
                 .withTopK(5)
                 .withFilterExpression("knowledge == '" + ragTag + "'");
@@ -94,10 +94,12 @@ public class OllamaController implements IAiService {
         messages.add(new UserMessage(message));
         messages.add(ragMessage);
 
+        // 使用指定模型和构建好的消息上下文，发起流式聊天请求并返回响应
         return chatClient.stream(new Prompt(
                 messages,
-                OllamaOptions.create()
+                OpenAiChatOptions.builder()
                         .withModel(model)
+                        .build()
         ));
     }
 
