@@ -3,6 +3,7 @@ package com.malog.hxxxi.dev.tech.api;
 import com.malog.hxxxi.dev.tech.api.response.Response;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,5 +27,15 @@ public interface IRAGService {
      * @return 包含上传结果信息的响应对象
      */
     Response<String> uploadFile(String ragTag, List<MultipartFile> files);
+
+    /**
+     * 分析Git仓库并上传知识库
+     *
+     * @param repoUrl  Git仓库URL
+     * @param userName Git仓库用户名
+     * @param token    Git仓库访问令牌
+     * @return 响应结果
+     */
+    Response<String> analyzeGitRepository(String repoUrl, String userName, String token) throws Exception;
 
 }
