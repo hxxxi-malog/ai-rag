@@ -44,7 +44,7 @@ public class OpenAiController implements IAiService {
      */
     @RequestMapping(value = "generate", method = RequestMethod.GET)
     @Override
-    public ChatResponse generate(String model, String message) {
+    public ChatResponse generate(@RequestParam("model") String model, @RequestParam("message") String message) {
         return chatClient.call(new Prompt(message, OpenAiChatOptions.builder().withModel(model).build()));
     }
 
@@ -57,7 +57,7 @@ public class OpenAiController implements IAiService {
      */
     @RequestMapping(value = "generate_stream", method = RequestMethod.GET)
     @Override
-    public Flux<ChatResponse> generateStream(String model, String message) {
+    public Flux<ChatResponse> generateStream(@RequestParam("model") String model, @RequestParam("message") String message) {
         return chatClient.stream(new Prompt(message, OpenAiChatOptions.builder().withModel(model).build()));
     }
 
